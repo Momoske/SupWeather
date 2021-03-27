@@ -15,7 +15,7 @@ connectDB();
 
 // middleware
 var corsOpts = {
-  origin: ['http://localhost:3000'],
+  origin: ['http://localhost:3000', 'https://supweather.netlify.app'],
   credentials: true,
   methods: ['GET', 'POST', 'OPTIONS', 'PUT', 'DELETE']
 };
