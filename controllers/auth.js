@@ -40,7 +40,7 @@ exports.register = async (req, res, next) => {
 
     sendToken(user, 201, res);
 
-  } catch (error) { next(error); }
+  } catch (error) { next(new ErrorResponse('Could not register.', 401)); }
 };
 
 
@@ -64,7 +64,7 @@ exports.login = async (req, res, next) => {
 
     sendToken(user, 200, res);
 
-  } catch (error) { next(error); }
+  } catch (error) { next(new ErrorResponse('Could not sign you in.', 401)); }
 };
 
 
@@ -72,7 +72,6 @@ exports.forgotpw = async (req, res, next) => {
   const {forgot} = req.body;
 
   try {
-
     const user = await User.findOne({[forgot.includes('@') ? 'email' : 'username']: forgot});
 
     if (!user)
@@ -110,7 +109,7 @@ exports.forgotpw = async (req, res, next) => {
       return next(new ErrorResponse('Email could not be sent.', 500));
     }
 
-  } catch (error) { next(error); }
+  } catch (error) { next(new ErrorResponse('Email could not be sent.', 500)); }
 
 };
 
@@ -119,7 +118,6 @@ exports.resetpw = async (req, res, next) => {
   const resetPasswordToken = crypto.createHash('sha256').update(req.params.resetToken).digest('hex');
 
   try {
-
     const user = await User.findOne({
       resetPasswordToken,
       resetPasswordExpire: {$gt: Date.now()} // Check if current time is still in the token expiration timeframe
@@ -139,7 +137,7 @@ exports.resetpw = async (req, res, next) => {
       data: 'Password has been reset successfully.'
     });
 
-  } catch (error) { next(error) }
+  } catch (error) { next(new ErrorResponse('Could not reset your password.', 401)); }
 };
 
 
