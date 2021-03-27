@@ -29,7 +29,7 @@ app.use(errorHandler); // needs to be last middleware used here
 
 
 // api endpoints
-app.get('/', (req, res) => res.status(200).send('WELCOME TO THE GOOD FORK!'));
+app.get('/', (req, res) => res.status(200).send('Welcome to SupWeather!'));
 
 
 // listener

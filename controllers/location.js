@@ -18,5 +18,5 @@ exports.location = async (req, res, next) => {
 
     return res.status(200).json({ success: true, location: location.data });
 
-  } catch (error) { console.log(error); return next(new ErrorResponse('Could not retrieve user location via IP.', 404)); }
+  } catch (error) { return next(new ErrorResponse('Could not retrieve user location via IP.', 404)); }
 };
