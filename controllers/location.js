@@ -1,5 +1,4 @@
 const axios = require('axios');
-const iplocation = require('iplocation');
 
 const ErrorResponse = require('../utils/errorResponse');
 
