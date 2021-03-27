@@ -36,7 +36,7 @@ exports.register = async (req, res, next) => {
       return next(new ErrorResponse(`Email address '${email}' is already in use, please register with a different one.`, 409));
 
 
-    const user = await User.create({username, email, password});
+    const user = await User.create({username, email, password, favorites: []});
 
     sendToken(user, 201, res);
 
