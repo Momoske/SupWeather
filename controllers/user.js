@@ -20,6 +20,9 @@ exports.addFavorite = async (req, res, next) => {
     if (!user)
       return next(new ErrorResponse('Could not get user info, please try again or sign out then in again.', 404));
 
+    if (user.favorites.includes(req.params.city))
+      return next(new ErrorResponse('You have already added ' + req.params.city.substring(0, req.params.city.indexOf(',')) + ' to your favorites.', 409));
+
     let favorites = user.favorites;
     favorites.push(req.params.city);
     user.favorites = favorites;
