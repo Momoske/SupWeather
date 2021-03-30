@@ -55,7 +55,7 @@ exports.removeFavorite = async (req, res, next) => {
       return next(new ErrorResponse('Could not get user info, please try again or sign out then in again.', 404));
 
     let favorites = user.favorites;
-    if (favorites.indexOf(req.params.city)) favorites.splice(favorites.indexOf(req.params.city), 1);
+    if (favorites.includes(req.params.city)) favorites.splice(favorites.indexOf(req.params.city), 1);
     user.favorites = favorites;
 
     await user.save();
@@ -65,5 +65,5 @@ exports.removeFavorite = async (req, res, next) => {
       data: 'City successfully removed from favorites.'
     });
 
-  } catch (error) { return next(new ErrorResponse('Could not remove city from favorites, please try again.', 401)); }
+  } catch (error) { console.log(error); return next(new ErrorResponse('Could not remove city from favorites, please try again.', 401)); }
 };

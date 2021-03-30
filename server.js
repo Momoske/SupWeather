@@ -1,5 +1,6 @@
 require('dotenv').config({path: './config.env'});
 
+const mongoSanitize = require('express-mongo-sanitize');
 const express = require('express');
 const cors = require('cors');
 
@@ -16,12 +17,14 @@ connectDB();
 // middleware
 var corsOpts = {
   origin: ['http://localhost:3000', 'https://supweather.netlify.app'],
-  credentials: true,
-  methods: ['GET', 'POST', 'OPTIONS', 'PUT', 'DELETE']
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true
 };
 
 app.use(cors(corsOpts));
 app.use(express.json());
+app.use(mongoSanitize());
+
 app.use('/api/v1/auth', require('./routes/auth'));
 app.use('/api/v1/user', require('./routes/user'));
 app.use('/api/v1/location', require('./routes/location'));
