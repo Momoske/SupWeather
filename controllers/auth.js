@@ -1,4 +1,5 @@
 const crypto = require('crypto');
+const { genSalt, compare } = require('bcrypt');
 const JsonWebToken = require('jsonwebtoken');
 
 const User = require('../models/User');
@@ -54,7 +55,7 @@ exports.login = async (req, res, next) => {
     
     const user = await User.findOne({[login.includes('@') ? 'email' : 'username']: login}).select('+password');
 
-    if (!user)
+    if (!user)      
       return next(new ErrorResponse('Invalid credentials.', 404));
 
     const isMatch = await user.matchPasswords(password);
