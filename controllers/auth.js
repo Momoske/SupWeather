@@ -1,5 +1,4 @@
 const crypto = require('crypto');
-const { genSalt, compare } = require('bcrypt');
 const JsonWebToken = require('jsonwebtoken');
 
 const User = require('../models/User');
@@ -10,22 +9,21 @@ const ErrorResponse = require('../utils/errorResponse');
 exports.register = async (req, res, next) => {
   const {username, email, password, passCheck} = req.body;
 
-  try {
+  // Do all checks for field entries before checking uniqueness of username & email address
+  if (!(username && email && password && passCheck))
+    return next(new ErrorResponse('Please fill in all the fields.', 400));
 
-    // Do all checks for field entries before checking uniqueness of username & email address
-    if (!(username && email && password && passCheck))
-      return next(new ErrorResponse('Please fill in all the fields.', 400));
+  if (username.includes('@') || username.includes(' '))
+    return next(new ErrorResponse('Your username cannot contain "@" or a whitespace.', 400));
 
-    if (username.includes('@') || username.includes(' '))
-      return next(new ErrorResponse('Your username cannot contain "@" or a whitespace.', 400));
+  if (password.length < 6)
+    return next(new ErrorResponse('Your password should be at least 6 characters long.', 400));
 
-    if (password.length < 6)
-      return next(new ErrorResponse('Your password needs to be at least 6 characters long.', 400));
-
-    if (password !== passCheck)
-      return next(new ErrorResponse('Passwords do not match.', 400));
+  if (password !== passCheck)
+    return next(new ErrorResponse('Passwords do not match.', 400));
 
       
+  try {
     // Check uniqueness of username
     const userExists = await User.findOne({username});
     if (userExists)
@@ -35,7 +33,6 @@ exports.register = async (req, res, next) => {
     const emailExists = await User.findOne({email});
     if (emailExists)
       return next(new ErrorResponse(`Email address '${email}' is already in use, please register with a different one.`, 409));
-
 
     const user = await User.create({username, email, password, favorites: []});
 
@@ -83,18 +80,18 @@ exports.forgotpw = async (req, res, next) => {
 
     const content = `
       <h2>${user?.username},</h2>
-      <br/><h3>You requested a password reset.</h3><br/>
-      <p>Please copy this reset code back inside the app:
-        <br/><br/>${resetToken}
+      <h3>You requested a password reset.</h3><br/>
+      <p>Please copy this reset code back on the website:
+        <br/>${resetToken}
       </p><br/>
-      <p>If the reset code matches, your account will be secured with your new password.</p><br/>
-      <h4>Thank you for using our services and making your account more secure.</h4>
-      <p>The Good Fork &copy; - 2021</p>
+      <p>If the reset code matches, your account will be secured with your new password.</p>
+      <h4>Thank you for using our website and making your account more secure.</h4>
+      <p>SupWeather &copy; - 2021</p>
     `;
 
     try {
 
-      sendEmail({email: user.email, subject: 'The Good Fork - Password Reset Request', content});
+      sendEmail({email: user.email, subject: 'SupWeather - Password Reset Request', content});
 
       res.status(200).json({
         success: true,
@@ -116,7 +113,17 @@ exports.forgotpw = async (req, res, next) => {
 
 
 exports.resetpw = async (req, res, next) => {
+  const {password, passCheck} = req.body;
   const resetPasswordToken = crypto.createHash('sha256').update(req.params.resetToken).digest('hex');
+
+  if (!password || !passCheck)
+    return next(new ErrorResponse('Please fill in all the fields.', 400));
+
+  if (password.length < 6)
+    return next(new ErrorResponse('Your password should be at least 6 characters long.', 400));
+
+  if (password !== passCheck)
+    return next(new ErrorResponse('Passwords do not match.', 400));
 
   try {
     const user = await User.findOne({
@@ -127,7 +134,7 @@ exports.resetpw = async (req, res, next) => {
     if (!user)
       return next(new ErrorResponse('The token to reset your password is wrong or has expired. Please reset your password within 15 minutes of sending the reset request.', 400));
 
-    user.password = req.body.password
+    user.password = password;
     user.resetPasswordToken = undefined;
     user.resetPasswordExpire = undefined;
 
@@ -135,7 +142,7 @@ exports.resetpw = async (req, res, next) => {
 
     return res.status(201).json({
       success: true,
-      data: 'Password has been reset successfully.'
+      data: 'Password reset successfully.'
     });
 
   } catch (error) { next(new ErrorResponse('Could not reset your password.', 401)); }
@@ -191,8 +198,5 @@ exports.deleteUser = async (req, res, next) => {
 
 const sendToken = (user, statusCode, res) => {
   const token = user.getSignedToken();
-  res.status(statusCode).json({
-    success: true,
-    token: token
-  });
+  res.status(statusCode).json({success: true, token, user});
 };
