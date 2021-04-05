@@ -39,9 +39,9 @@ app.get('/api/v1', (req, res) => res.status(200).send('Welcome to SupWeather!'))
 
 
 // listener
-app.listen(port, () => console.log('Listening on localhost:' + port));
+const server = app.listen(port, () => console.log('Listening on port ' + port));
 
 process.on('unhandledRejection', (error, _) => {
-  console.log('Logged Error: '+ error);
+  console.log('Logged Error: '+error);
   server.close(() => process.exit(1));
 });
