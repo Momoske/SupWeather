@@ -11,8 +11,8 @@ const errorHandler = require('./middleware/error');
 
 
 // https config
-const cert = fs.readFileSync('cert.pem', 'utf8');
-const key  = fs.readFileSync('key.pem', 'utf8');
+const cert = process.env.NODE_ENV !== 'production' ? fs.readFileSync('cert.pem', 'utf8') : null;
+const key  = process.env.NODE_ENV !== 'production' ? fs.readFileSync('key.pem', 'utf8') : null;
 const credentials = {key: key, cert: cert};
 
 
@@ -46,7 +46,11 @@ app.get('/', (req, res) => res.status(200).send('Welcome to SupWeather!'));
 
 // listener
 const httpsServer = https.createServer(credentials, app);
-const server = httpsServer.listen(port, () => console.log('Listening on port ' + port));
+const server = process.env.NODE_ENV !== 'production'
+  ?
+httpsServer.listen(port, () => console.log('Listening on port ' + port))
+  :
+app.listen(port, () => console.log('Listening on port ' + port));
 
 process.on('unhandledRejection', (error, _) => {
   console.log('Logged Error: '+error);
