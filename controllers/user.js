@@ -5,10 +5,7 @@ const ErrorResponse = require('../utils/errorResponse');
 
 
 exports.addFavorite = async (req, res, next) => {
-  let token;
-
-  if (req.headers.authorization && req.headers.authorization.startsWith('Bearer'))
-    token = req.headers.authorization.split(' ')[1];
+  const token = req.cookies.authToken;
 
   if (!token)
     return next(new ErrorResponse('Could not get user info, please try again or sign out then in again.', 401));
@@ -39,10 +36,7 @@ exports.addFavorite = async (req, res, next) => {
 
 
 exports.removeFavorite = async (req, res, next) => {
-  let token;
-
-  if (req.headers.authorization && req.headers.authorization.startsWith('Bearer'))
-    token = req.headers.authorization.split(' ')[1];
+  const token = req.cookies.authToken;
 
   if (!token)
     return next(new ErrorResponse('Could not get user info, please try again or sign out then in again.', 401));

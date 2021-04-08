@@ -3,7 +3,10 @@ require('dotenv').config({path: './config.env'});
 const fs = require('fs');
 const cors = require('cors');
 const https = require('https');
+const helmet = require('helmet');
 const express = require('express');
+const cookieParser = require('cookie-parser');
+const RateLimit = require('express-rate-limit');
 const mongoSanitize = require('express-mongo-sanitize');
 
 const connectDB = require('./config/db');
@@ -29,10 +32,18 @@ const corsOpts = {
   credentials: true
 };
 
+const rateLimiter = new RateLimit({
+  windowMs: 600000, // 10 minutes
+  max: 100 // 100 requests max
+});
+
+app.use(helmet());
+app.use(cookieParser());
 app.use(cors(corsOpts));
 app.use(express.json());
 app.use(mongoSanitize());
 
+app.use('/api/v1', rateLimiter);
 app.use('/api/v1/auth', require('./routes/auth'));
 app.use('/api/v1/user', require('./routes/user'));
 app.use('/api/v1/location', require('./routes/location'));

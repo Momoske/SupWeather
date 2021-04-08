@@ -49,7 +49,6 @@ exports.login = async (req, res, next) => {
     return next(new ErrorResponse('Please provide both email and password in order to login.', 400));
 
   try {
-    
     const user = await User.findOne({[login.includes('@') ? 'email' : 'username']: login}).select('+password');
 
     if (!user)      
@@ -63,6 +62,14 @@ exports.login = async (req, res, next) => {
     sendToken(user, 200, res);
 
   } catch (error) { next(new ErrorResponse('Could not sign you in.', 401)); }
+};
+
+
+exports.logout = async (req, res, next) => {
+  if (!req.cookies.authToken)
+    return next(new ErrorResponse('You cannot logout without being signed in.', 400));
+
+  res.clearCookie('authToken').json({success: true});
 };
 
 
@@ -150,11 +157,8 @@ exports.resetpw = async (req, res, next) => {
 
 
 exports.userinfo = async (req, res, next) => {
-  let token;
-
-  if (req.headers.authorization && req.headers.authorization.startsWith('Bearer'))
-    token = req.headers.authorization.split(' ')[1];
-
+  const token = req.cookies.authToken;
+  
   if (!token)
     return next(new ErrorResponse('Could not get user info, please try again or sign out then in again.', 401));
 
@@ -166,17 +170,14 @@ exports.userinfo = async (req, res, next) => {
       return next(new ErrorResponse('Could not get user info, please try again or sign out then in again.', 404));
 
     req.user = user;
-    return res.status(200).json({ success: true, user });
+    return res.status(200).json({success: true, user});
 
   } catch (error) { return next(new ErrorResponse('Could not get user info, please try again or sign out then in again.', 401)); }
 };
 
 
 exports.deleteUser = async (req, res, next) => {
-  let token;
-
-  if (req.headers.authorization && req.headers.authorization.startsWith('Bearer'))
-    token = req.headers.authorization.split(' ')[1];
+  const token = req.cookies.authToken;
 
   if (!token)
     return next(new ErrorResponse('Could not get user info, please try again or sign out then in again.', 401));
@@ -185,18 +186,21 @@ exports.deleteUser = async (req, res, next) => {
     const decoded = JsonWebToken.verify(token, process.env.JWT_SECRET);
     const user = await User.deleteOne({_id: decoded.id});
 
-    console.log('test');
-
     if (!user)
       return next(new ErrorResponse('Could not get user info, please try again or sign out then in again.', 404));
 
-    return res.status(200).json({ success: true, message: 'Successfully deleted your account.' });
+    return res.clearCookie('authToken').status(200).json({success: true});
 
-  } catch (error) { return next(new ErrorResponse('Could not get user info, please try again or sign out then in again.', 401)); }
+  } catch (error) { return next(new ErrorResponse('Could not delete your account, please try again.', 401)); }
 };
 
 
 const sendToken = (user, statusCode, res) => {
   const token = user.getSignedToken();
-  res.status(statusCode).json({success: true, token, user});
+  res.cookie('authToken', token, {
+    expires: new Date(Date.now() + process.env.COOKIE_EXPIRES),
+    sameSite: 'Lax',
+    httpOnly: true,
+    secure: true
+  }).status(statusCode).json({success: true, user});
 };

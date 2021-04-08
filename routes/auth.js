@@ -1,10 +1,11 @@
 const express = require('express');
 
-const { login, register, forgotpw, resetpw, userinfo, deleteUser } = require('../controllers/auth');
+const { login, logout, register, forgotpw, resetpw, userinfo, deleteUser } = require('../controllers/auth');
 
 const router = express.Router();
 
 router.route('/login').post(login);
+router.route('/logout').get(logout);
 router.route('/forgot').post(forgotpw);
 router.route('/userinfo').get(userinfo);
 router.route('/register').post(register);
