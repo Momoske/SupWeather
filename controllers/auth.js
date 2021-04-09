@@ -36,6 +36,7 @@ exports.register = async (req, res, next) => {
 
     const user = await User.create({username, email, password, favorites: []});
 
+    user.password = undefined;
     sendToken(user, 201, res);
 
   } catch (error) { next(new ErrorResponse('Could not register.', 401)); }
@@ -59,6 +60,7 @@ exports.login = async (req, res, next) => {
     if(!isMatch)
       return next(new ErrorResponse('Invalid credentials.', 401));
 
+    user.password = undefined;
     sendToken(user, 200, res);
 
   } catch (error) { next(new ErrorResponse('Could not sign you in.', 401)); }
@@ -66,10 +68,9 @@ exports.login = async (req, res, next) => {
 
 
 exports.logout = async (req, res, next) => {
-  if (!req.cookies.authToken)
-    return next(new ErrorResponse('You cannot logout without being signed in.', 400));
-
-  res.clearCookie('authToken').json({success: true});
+  try {
+    res.clearCookie('authToken').json({success: true});
+  } catch (error) { next(new ErrorResponse('Could not sign you out.', 400)); }
 };
 
 
