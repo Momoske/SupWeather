@@ -1,4 +1,5 @@
 const crypto = require('crypto');
+const sanitize = require('mongo-sanitize');
 const JsonWebToken = require('jsonwebtoken');
 
 const User = require('../models/User');
@@ -7,7 +8,7 @@ const ErrorResponse = require('../utils/errorResponse');
 
 
 exports.register = async (req, res, next) => {
-  const {username, email, password, passCheck} = req.body;
+  const {username, email, password, passCheck} = sanitize(req.body);
 
   // Do all checks for field entries before checking uniqueness of username & email address
   if (!(username && email && password && passCheck))
@@ -44,7 +45,7 @@ exports.register = async (req, res, next) => {
 
 
 exports.login = async (req, res, next) => {
-  const {login, password} = req.body;
+  const {login, password} = sanitize(req.body);
 
   if (!login || !password)
     return next(new ErrorResponse('Please provide both email and password in order to login.', 400));
@@ -75,7 +76,7 @@ exports.logout = async (req, res, next) => {
 
 
 exports.forgotpw = async (req, res, next) => {
-  const {forgot} = req.body;
+  const {forgot} = sanitize(req.body);
 
   try {
     const user = await User.findOne({[forgot.includes('@') ? 'email' : 'username']: forgot});
@@ -121,8 +122,8 @@ exports.forgotpw = async (req, res, next) => {
 
 
 exports.resetpw = async (req, res, next) => {
-  const {password, passCheck} = req.body;
-  const resetPasswordToken = crypto.createHash('sha256').update(req.params.resetToken).digest('hex');
+  const {password, passCheck} = sanitize(req.body);
+  const resetPasswordToken = crypto.createHash('sha256').update(sanitize(req.params.resetToken)).digest('hex');
 
   if (!password || !passCheck)
     return next(new ErrorResponse('Please fill in all the fields.', 400));
@@ -170,7 +171,6 @@ exports.userinfo = async (req, res, next) => {
     if (!user)
       return next(new ErrorResponse('Could not get user info, please try again or sign out then in again.', 404));
 
-    req.user = user;
     return res.status(200).json({success: true, user});
 
   } catch (error) { return next(new ErrorResponse('Could not get user info, please try again or sign out then in again.', 401)); }
