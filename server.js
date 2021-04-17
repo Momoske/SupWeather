@@ -1,6 +1,7 @@
 require('dotenv').config({path: './config.env'});
 
 const fs = require('fs');
+const path = require('path');
 const cors = require('cors');
 const https = require('https');
 const helmet = require('helmet');
@@ -27,7 +28,7 @@ connectDB();
 
 // middleware
 const corsOpts = {
-  origin: [process.env.NODE_ENV !== 'production' ? 'https://localhost:3000' : 'https://supweather.netlify.app'],
+  origin: ['https://localhost:3000', 'https://localhost:9000', 'https://supweather.netlify.app', 'https://supweather.herokuapp.com'],
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true
 };
@@ -48,11 +49,9 @@ app.use('/api/v1/auth', require('./routes/auth'));
 app.use('/api/v1/user', require('./routes/user'));
 app.use('/api/v1/location', require('./routes/location'));
 
+app.get('*', (req, res) => res.sendFile(path.join(__dirname+'/client/build/index.html')));
+
 app.use(errorHandler); // needs to be last middleware used here
-
-
-// api endpoints
-app.get('/', (req, res) => res.status(200).send('Welcome to SupWeather!'));
 
 
 // listener

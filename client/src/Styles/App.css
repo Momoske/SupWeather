@@ -1,0 +1,102 @@
+.app {
+  height: 100vh;
+  display: flex;
+  overflow: hidden;
+  flex-direction: column;
+}
+
+.button {
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  padding: 8px 12px;
+  border-radius: 5px;
+  background-color: #e6e6e6;
+  transition: 0.25s ease-in-out !important;
+}
+.button:hover {
+  opacity: 0.66;
+}
+
+.toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.toggle * {
+  box-shadow: none !important;
+}
+
+.hr {
+  height: 2px;
+  border: none;
+  background-color: #ccc; 
+}
+
+input {
+  outline: 0;
+  border: none;
+  padding: 12px;
+  margin: 8px 0;
+  border-radius: 5px;
+  background-color: #eee;
+}
+.header input {
+  background-color: #e6e6e6;
+}
+.home input {
+  background-color: white;
+}
+label:not(.toggle) {
+  margin: 0 12px;
+}
+
+button {
+  border: none;
+  cursor: pointer;
+  background-color: transparent;
+}
+button:hover {
+  opacity: 0.5;
+}
+
+.submit {
+  background-color: #84faa4aa;
+}
+
+.remove {
+  color: #f22;
+  font-weight: 600;
+  user-select: none;
+}
+
+
+/* DARK MODE */
+
+.dark * {
+  color: #eee;
+}
+
+.dark .button {
+  background-color: #303030;
+}
+.dark .button:hover {
+  background-color: #363636;
+}
+
+.dark .submit {
+  background-color: #243cf8aa;
+}
+
+.dark input {
+  background-color: #303030;
+}
+
+.dark .hr {
+  background-color: #666;
+}
+
+.dark .remove {
+  color: #e33;
+}

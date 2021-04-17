@@ -1,0 +1,47 @@
+.sidebar {
+  display: flex;
+}
+
+.sidebar__drawer {
+  top: 0;
+  left: 0;
+  z-index: 99;
+  width: 280px;
+  height: 100vh;
+  overflow: auto;
+  position: fixed;
+  background-color: #eee;
+  transform: translateX(-280px);
+  transition: 0.4s cubic-bezier(0.2, 0.8, 0.4, 1) !important;
+}
+
+.sidebar__drawer__close {
+  top: 0;
+  right: 0;
+  padding: 16px;
+  cursor: pointer;
+  position: absolute;
+}
+
+.sidebar__content {
+  padding: 16px;
+}
+
+.sidebar__backdrop {
+  opacity: 0;
+  z-index: 98;
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  max-height: 100%;
+  visibility: hidden;
+  background-color: #000;
+  transition: 0.4s cubic-bezier(0.2, 0.8, 0.4, 1) !important;
+}
+
+
+/* DARK THEME */
+
+.dark .sidebar__drawer {
+  background-color: #242424;
+}

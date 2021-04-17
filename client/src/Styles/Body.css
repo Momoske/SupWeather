@@ -1,0 +1,23 @@
+.body {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  max-width: 100%;
+  overflow: hidden;
+  flex-direction: column;
+}
+
+.fade-enter {
+  opacity: 0;
+  z-index: 1;
+}
+
+.fade-enter.fade-enter-active {
+  opacity: 1;
+  transition: opacity 0.4s ease-in;
+}
+
+.fade-exit.fade-exit-active {
+  height: 0;
+  transition: opacity 0.4s ease-in;
+}

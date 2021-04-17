@@ -1,0 +1,130 @@
+.citydetails {
+  flex-grow: 1;
+  overflow: auto;
+  background-color: #eaeaea;
+}
+
+.citydetails__body {
+  padding: 24px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+#title { line-height: 24px; }
+#title * { margin: 24px; }
+
+.citycard__options {
+  min-width: 210px;
+  max-height: 105px;
+  border-radius: 8px;
+  display: inline-flex;
+  flex-direction: column;
+  background-color: white;
+  box-shadow: 0 0 16px rgb(200 200 200 / 25%);
+}
+.citycard__options > * { margin: 12px; text-align: center; }
+.citycard__options div {
+  display: flex;
+  justify-content: space-between;
+}
+.citycard__options button:hover { opacity: 1; }
+.citycard__options button.selected { color: #243cf8; }
+.citycard__options button:not(.selected) { background-color: transparent; }
+
+.citycard__detail__date {
+  display: flex;
+  justify-content: center;
+}
+.citycard__detail__date > p {
+  margin: 0;
+  padding: 12px;
+}
+
+.citycard__detail {
+  width: 25%;
+  display: flex;
+  margin: 0 auto;
+  min-width: 280px;
+  border-radius: 8px;
+  padding-bottom: 2px;
+  flex-direction: column;
+  background-color: white;
+  box-shadow: 0 0 16px rgb(200 200 200 / 25%);
+}
+.citydetails__body *:not(div), .citycard__detail__date *, .content__row *:not(p):not(div) {
+  transition: color 0.25s ease-in-out, background 0.25s ease-in-out !important;
+}
+
+.citycard__detail > .citycard__content > p:not(.citycard__status) {
+  line-height: 10px;
+}
+
+.citycard__detail > .citycard__img {
+  margin: 0 auto;
+  padding: 12px 0 0;
+}
+
+.citycard__detail > .citycard__content {
+  width: 100%;
+}
+
+.content__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.content__row > * { margin: 0; }
+.content__row p { font-size: 13px; }
+
+.react-multi-carousel-list {
+  margin-bottom: 24px;
+}
+.react-multi-carousel-list * {
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.citycard__content span, .citycard__content div {
+  transition: color 0s;
+}
+
+
+/* DARK MODE */
+
+.dark .citydetails {
+  background-color: #181818;
+}
+
+.dark .citycard__detail {
+  box-shadow: none;
+  background-color: #242424;
+}
+
+.dark .citycard__options {
+  box-shadow: none;
+  background-color: #242424;
+}
+
+.dark .citycard__options button.selected {
+  color: #84faa4;
+  background-color: #363636;
+}
+
+
+@media(max-width: 671px) {
+  .citydetails__body {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .citydetails__body > * {
+    margin: 10px 0;
+  }
+  #title {
+    line-height: inherit;
+  }
+  #title h2 {
+    display: none;
+  }
+}
