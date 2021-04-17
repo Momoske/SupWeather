@@ -30,15 +30,19 @@
   flex-direction: column;
 }
 
+.auth__title { text-align: center; }
+
 .auth button { margin: 12px; }
 
 #forgotLink {
   color: inherit;
-  margin-left: 12px;
+  text-align: right;
+  margin-right: 12px;
   text-decoration: none;
-  transition: color 0.25s ease-in-out;
 }
 #forgotLink:hover { text-decoration: underline; }
+
+#forgotLink, .auth__title { transition: color 0.25s ease-in-out; }
 
 
 /* DARK MODE */

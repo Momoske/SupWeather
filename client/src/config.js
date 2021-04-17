@@ -1,4 +1,4 @@
-export const apiUrl = 'https://localhost:9000/api/v1/';
+export const apiUrl = process.env.NODE_ENV === 'production' ? 'https://supweather.herokuapp.com/api/v1/' : 'https://localhost:9000/api/v1/';
 export const apiKey = process.env.REACT_APP_API_KEY;
 
 export const config = {

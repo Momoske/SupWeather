@@ -46,7 +46,7 @@ export default function Header() {
         <input placeholder="Search in your favorites..." onChange={(e) => searchCities(e.target.value, dispatch)}/>
       </div>}
 
-      <span className="theme__toggle" style={{justifyContent: 'flex-end'}}>
+      <div className="theme__toggle" style={{justifyContent: 'flex-end'}}>
         <p style={{opacity: !dark ? '1' : '0.5'}}>Light</p>
         <label className="toggle">
           <Switch checked={dark} onChange={() => toggleTheme(dark, setDark)} onColor='#6e40c9'
@@ -82,7 +82,7 @@ export default function Header() {
           />
         </label>
         <p style={{opacity: dark ? '1' : '0.5'}}>Dark</p>
-      </span>
+      </div>
     </div>
   );
 }

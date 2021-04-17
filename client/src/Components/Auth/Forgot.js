@@ -45,7 +45,7 @@ export default function Forgot() {
       {!emailSent
         ?
       <form className="auth__form" onSubmit={e => handleForgot(e, forgot, setEmailSent)}>
-        <h2 style={{textAlign: 'center'}}>Please type in your username or email address to reset your password.</h2><br/>
+        <h2 className="auth__title">Please type in your username or email address to reset your password.</h2><br/>
         <div className="auth__content">
           <span>
             <label htmlFor="forgot">Email address or username</label>
@@ -59,7 +59,7 @@ export default function Forgot() {
       </form>
         :
       <form className="auth__form" onSubmit={e => handleReset(e, reset, history)}>
-        <h2 style={{textAlign: 'center'}}>Please type in the reset code sent by email with your new password.</h2><br/>
+        <h2 className="auth__title">Please type in the reset code sent by email with your new password.</h2><br/>
         <div className="auth__content">
           <span style={{display: 'none'}}><input type="hidden"/></span>
           <span>

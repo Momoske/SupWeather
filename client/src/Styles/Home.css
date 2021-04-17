@@ -141,7 +141,7 @@
 
 @media(min-width: 671px) {
   .home__search {
-    display: none;
+    display: none !important;
   }
 }
 

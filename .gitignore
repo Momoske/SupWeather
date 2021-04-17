@@ -15,8 +15,8 @@ client/.pnp.js
 client/coverage
 
 # production
+client/.env
 client/build
-
 client/key.pem
 client/cert.pem
 

@@ -26,9 +26,12 @@ const app = express();
 connectDB();
 
 
+app.use(express.static(path.join(__dirname, 'client', 'build')));
+
+
 // middleware
 const corsOpts = {
-  origin: ['https://localhost:3000', 'https://localhost:9000', 'https://supweather.netlify.app', 'https://supweather.herokuapp.com'],
+  origin: ['https://localhost:3000', 'https://localhost:9000', 'https://supweather.herokuapp.com'],
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true
 };
@@ -39,6 +42,17 @@ const rateLimiter = new RateLimit({
 });
 
 app.use(helmet());
+app.use(helmet.contentSecurityPolicy({
+  directives: {
+    defaultSrc: ["'self'"],
+    styleSrc: ["'self'", "'unsafe-inline'", 'fonts.googleapis.com'],
+    scriptSrc: ["'self'", "'unsafe-inline'"],
+    fontSrc: ["'self'", 'fonts.gstatic.com'],
+    imgSrc: ["'self'", 'openweathermap.org'],
+    connectSrc: ["'self'", 'api.ipify.org', 'ipv4.icanhazip.com', 'api.openweathermap.org']
+  },
+}));
+
 app.use(cookieParser());
 app.use(cors(corsOpts));
 app.use(express.json());
@@ -49,18 +63,18 @@ app.use('/api/v1/auth', require('./routes/auth'));
 app.use('/api/v1/user', require('./routes/user'));
 app.use('/api/v1/location', require('./routes/location'));
 
-app.get('*', (req, res) => res.sendFile(path.join(__dirname+'/client/build/index.html')));
+app.get('*', (req, res) => res.sendFile(path.join(__dirname, 'client', 'build', 'index.html')));
 
 app.use(errorHandler); // needs to be last middleware used here
 
 
 // listener
 const httpsServer = https.createServer(credentials, app);
-const server = process.env.NODE_ENV !== 'production'
+const server = process.env.NODE_ENV === 'production'
   ?
-httpsServer.listen(port, () => console.log('Listening on port ' + port))
+app.listen(port, () => console.log('Listening on port ' + port))
   :
-app.listen(port, () => console.log('Listening on port ' + port));
+httpsServer.listen(port, () => console.log('Listening on port ' + port));
 
 process.on('unhandledRejection', (error, _) => {
   console.log('Logged Error: '+error);
