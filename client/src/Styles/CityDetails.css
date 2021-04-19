@@ -11,6 +11,9 @@
   justify-content: space-between;
 }
 
+
+/* TITLE & 3H - 24H DISPLAY OPTION */
+
 #title { line-height: 24px; }
 #title * { margin: 24px; }
 
@@ -32,6 +35,9 @@
 .citycard__options button.selected { color: #243cf8; }
 .citycard__options button:not(.selected) { background-color: transparent; }
 
+
+/* CAROUSEL CARD */
+
 .citycard__detail__date {
   display: flex;
   justify-content: center;
@@ -52,8 +58,12 @@
   background-color: white;
   box-shadow: 0 0 16px rgb(200 200 200 / 25%);
 }
-.citydetails__body *:not(div), .citycard__detail__date *, .content__row *:not(p):not(div) {
-  transition: color 0.25s ease-in-out, background 0.25s ease-in-out !important;
+.citycard__detail__date *, .citydetails__body *:not(div), .content__row *:not(p):not(div) {
+  transition: color 0.33s ease-in-out, background 0.33s ease-in-out !important;
+}
+
+.citycard__content span, .citycard__content div {
+  transition: color 0s;
 }
 
 .citycard__detail > .citycard__content > p:not(.citycard__status) {
@@ -77,16 +87,15 @@
 .content__row > * { margin: 0; }
 .content__row p { font-size: 13px; }
 
+
+/* CAROUSEL AREA */
+
 .react-multi-carousel-list {
   margin-bottom: 24px;
 }
 .react-multi-carousel-list * {
   user-select: none;
   -webkit-user-drag: none;
-}
-
-.citycard__content span, .citycard__content div {
-  transition: color 0s;
 }
 
 
@@ -111,6 +120,8 @@
   background-color: #363636;
 }
 
+
+/* MOBILE RESPONSIVE */
 
 @media(max-width: 671px) {
   .citydetails__body {

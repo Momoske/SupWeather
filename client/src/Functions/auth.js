@@ -69,7 +69,7 @@ export const deleteUser = async () => {
 }
 
 
-export const setUserInfo = async () => {
+export const getUserInfo = async () => {
   try {
     const {data} = await axios.get(apiUrl + 'auth/userinfo', cookieConfig);
 

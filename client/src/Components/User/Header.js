@@ -12,25 +12,21 @@ const openSidebar = () => {
   document.querySelector('.sidebar__backdrop').style.visibility = 'inherit';
   document.querySelector('.sidebar__backdrop').style.opacity = 0.5;
 }
-  
-const toggleTheme = (dark, setDark) => {
-  document.querySelector('.app').classList.toggle('dark');
+
+const toggleTheme = (dark, setDark, dispatch) => {
+  setDark(!dark);
   localStorage.setItem('theme', dark ? 'light' : 'dark');
-  setDark(dark => !dark);
+  document.querySelector('.app').classList.toggle('dark');
+  dispatch({ type: 'SET_THEME', theme: dark ? 'light' : 'dark' });
 }
 
-const searchCities = (search, dispatch) => dispatch({type: 'SET_SEARCH', search});
+// Use app context to communicate search between header & home city cards
+const searchCities = (search, dispatch) => dispatch({ type: 'SET_SEARCH', search });
 
 
 export default function Header() {
-  const [{user}, dispatch] = useDataLayerValue();
-  const [dark, setDark] = useState(
-    localStorage.getItem('theme')
-      ?
-    (localStorage.getItem('theme') === 'dark' ? true : false)
-      :
-    (window.matchMedia('(prefers-color-scheme: dark)')?.matches ? true : false)
-  );
+  const [{user, theme}, dispatch] = useDataLayerValue();
+  const [dark, setDark] = useState(theme === 'dark' ? true : false);
 
 
   return (
@@ -49,7 +45,7 @@ export default function Header() {
       <div className="theme__toggle" style={{justifyContent: 'flex-end'}}>
         <p style={{opacity: !dark ? '1' : '0.5'}}>Light</p>
         <label className="toggle">
-          <Switch checked={dark} onChange={() => toggleTheme(dark, setDark)} onColor='#6e40c9'
+          <Switch checked={dark} onChange={() => toggleTheme(dark, setDark, dispatch)} onColor='#6e40c9'
             offColor='#fd0' onHandleColor='#6e40c9' offHandleColor='#fd0'
             checkedIcon={
               <svg width="80%" height="80%" viewBox="0 0 128 128">

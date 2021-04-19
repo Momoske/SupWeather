@@ -1,12 +1,12 @@
 import React from 'react';
 
-import UnitType from './Settings/UnitType';
 import OWMicons from './Settings/OWMicons';
+import UnitType from './Settings/UnitType';
 import DefaultWeather from './Settings/DefaultWeather';
+import { deleteUser, logout } from '../../../Functions/auth';
 import { useDataLayerValue } from '../../../Context/DataLayer';
 
 import '../../../Styles/Sidebar.css';
-import { deleteUser, logout } from '../../../Functions/auth';
 
 
 const closeSidebar = () => {
@@ -18,7 +18,7 @@ const closeSidebar = () => {
 const handleLogout = (dispatch) => {
   logout().then(res => {
     if (!res.success) return window.alert(res);
-    dispatch({type: 'SET_USER', user: {}});
+    dispatch({ type: 'SET_USER', user: {} });
     localStorage.removeItem('isSignedIn');
   });
 }
@@ -27,7 +27,7 @@ const deleteAccount = (dispatch) => {
   if (window.confirm('Are you sure to delete your account?')) {
     deleteUser().then(res => {
       if (!res.success) return window.alert(res);
-      dispatch({type: 'SET_USER', user: {}});
+      dispatch({ type: 'SET_USER', user: {} });
       localStorage.removeItem('isSignedIn');
     });
   }
@@ -35,14 +35,16 @@ const deleteAccount = (dispatch) => {
 
 
 export default function Sidebar() {
-  const [,dispatch] = useDataLayerValue();
+  const [{user}, dispatch] = useDataLayerValue();
 
   return (
     <div className="sidebar">
       <div className="sidebar__drawer">
 
-        <h2 style={{margin: 0, padding: '12px 16px'}}>Settings</h2>
-        <span onClick={closeSidebar} className="material-icons-round sidebar__drawer__close">close</span>
+        <div className="sidebar__header">
+          <h2>{user.username ? `Hi, ${user.username}!` : 'Settings'}</h2>
+          <span onClick={closeSidebar} className="material-icons-round sidebar__drawer__close">close</span>
+        </div>
 
         <br/><hr className="hr" style={{margin: '0 16px'}}/><br/>
 

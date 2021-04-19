@@ -200,7 +200,7 @@ const sendToken = (user, statusCode, res) => {
   const token = user.getSignedToken();
   res.cookie('authToken', token, {
     expires: new Date(Date.now() + process.env.COOKIE_EXPIRES),
-    sameSite: 'Lax',
+    sameSite: 'Strict',
     httpOnly: true,
     secure: true
   }).status(statusCode).json({success: true, user});

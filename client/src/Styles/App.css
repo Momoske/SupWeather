@@ -5,6 +5,9 @@
   flex-direction: column;
 }
 
+
+/* GENERAL STYLE FOR SEVERAL HTML ELEMENTS */
+
 .button {
   border: none;
   cursor: pointer;
@@ -13,7 +16,7 @@
   padding: 8px 12px;
   border-radius: 5px;
   background-color: #e6e6e6;
-  transition: 0.25s ease-in-out !important;
+  transition: 0.33s ease-in-out !important;
 }
 .button:hover {
   opacity: 0.66;
@@ -69,6 +72,12 @@ button:hover {
   color: #f22;
   font-weight: 600;
   user-select: none;
+}
+
+.loader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 

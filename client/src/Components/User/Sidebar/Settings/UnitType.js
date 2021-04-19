@@ -3,14 +3,12 @@ import Switch from 'react-switch';
 
 import { useDataLayerValue } from '../../../../Context/DataLayer';
 
+
 export default function OWMicons() {
   const [{settings}, dispatch] = useDataLayerValue();
 
   const toggleUnitType = () => {
-    dispatch({
-      type: 'SET_SETTINGS',
-      settings: {...settings, metric: !settings.metric}
-    });
+    dispatch({ type: 'SET_SETTINGS', settings: {...settings, metric: !settings.metric} });
     localStorage.setItem('unit', localStorage.getItem('unit') !== 'imperial' ? 'imperial' : 'metric');
   }
 

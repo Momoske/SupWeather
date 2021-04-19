@@ -6,6 +6,10 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+
+/* REMOVE TRANSITIONS WHEN RESIZING WINDOW */
+
 body.stop-transitions * {
   transition: none !important;
 }
@@ -15,6 +19,8 @@ code {
 }
 
 
+/* SCROLLBAR CUSTOMIZATION */
+
 ::-webkit-scrollbar-track { border: solid 3px transparent; }
 ::-webkit-scrollbar { background: rgba(0, 0, 0, 0); width: 21px; }
 ::-webkit-scrollbar-thumb:hover { box-shadow: inset 0 0 21px 21px rgba(150, 150, 150, 1); }
@@ -22,17 +28,20 @@ code {
 
 @media(max-width: 871px) { ::-webkit-scrollbar { width: 0; } }
 
+
+/* MAIN TRANSITIONS HANDLING */
+
 .app div, .app a {
-  transition: background 0.25s ease-in-out, box-shadow 0.25s ease-in-out;
+  transition: background 0.33s ease-in-out, box-shadow 0.33s ease-in-out;
 }
 .login__content > span > * {
-  transition: color 0.25s ease-in-out, opacity 0.25s ease-in-out;
+  transition: color 0.33s ease-in-out, opacity 0.33s ease-in-out;
 }
 input, label {
-  transition: background 0.25s ease-in-out, color 0.25s ease-in-out !important;
+  transition: background 0.33s ease-in-out, color 0.33s ease-in-out !important;
 }
 button {
-  transition: background 0.2s ease-in-out, color 0.2s ease-in-out, opacity 0.2s ease-in-out !important;
+  transition: background 0.33s ease-in-out, color 0.33s ease-in-out, opacity 0.33s ease-in-out !important;
 }
 
 

@@ -4,55 +4,49 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import { getIpLocation } from '../Functions/utils';
 import LoggedInRoutes from '../Routes/LoggedInRoutes';
 import LoggedOutRoutes from '../Routes/LoggedOutRoutes';
-import { logout, setUserInfo } from '../Functions/auth';
+import { logout, getUserInfo } from '../Functions/auth';
 import { useDataLayerValue } from '../Context/DataLayer';
 
 import '../Styles/App.css';
 
 
 export default function App() {
-  const [{user}, dispatch] = useDataLayerValue();
+  const [{user, theme}, dispatch] = useDataLayerValue();
 
-  useEffect(() => { /* AVOID VISUAL GLITCHES ON WINDOW RESIZE */
-    (function() {
-      let timer = 0;
-      const body = document.body.classList;
-      window.addEventListener('resize', function () {
-        if (timer) {
-          clearTimeout(timer);
-          timer = null;
-        }
-        else body.add('stop-transitions');
+  useEffect(() => { // REMOVE TRANSITIONS ON WINDOW RESIZE
+    let timer = 0;
+    const body = document.body.classList;
+    window.addEventListener('resize', () => {
+      if (timer) {
+        clearTimeout(timer);
+        timer = null;
+      }
+      else body.add('stop-transitions');
 
-        timer = setTimeout(() => {
-          body.remove('stop-transitions');
-          timer = null;
-        }, 100);
-      });
-    })();
+      timer = setTimeout(() => {
+        body.remove('stop-transitions');
+        timer = null;
+      }, 100);
+    });
   }, []);
 
   useEffect(() => {
-    getIpLocation().then(res => dispatch({type: 'SET_IP_LOCATION', ipLocation: res.location}));
+    // Retrieve the user's nearest main city to display a default weather location on first login
+    getIpLocation().then(res => dispatch({ type: 'SET_IP_LOCATION', ipLocation: res.location }));
 
     const signedIn = localStorage.getItem('isSignedIn');
-    if (!signedIn) return dispatch({type: 'SET_USER', user: {}});
+    if (!signedIn) return dispatch({ type: 'SET_USER', user: {} });
 
-    setUserInfo().then(res => {
+    getUserInfo().then(res => {
       if (!res.success) { window.alert(res); logout(); }
-      dispatch({type: 'SET_USER', user: res.success ? res.user : {}});
+      dispatch({ type: 'SET_USER', user: res.user ?? {} });
     });
   }, [dispatch]);
   
 
   return (
-    <div className={localStorage.getItem('theme')
-      ?
-    (localStorage.getItem('theme') === 'dark' ? 'app dark' : 'app')
-      :
-    (window.matchMedia('(prefers-color-scheme: dark)')?.matches ? 'app dark' : 'app')}>
-      {user === null ? <></> :
-      <Router>
+    <div className={theme === 'dark' ? 'app dark' : 'app'}>
+      {user && <Router>
         {user._id ? <LoggedInRoutes/> : <LoggedOutRoutes/>}
       </Router>}
     </div>

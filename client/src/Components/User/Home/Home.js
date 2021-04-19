@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import React, { useEffect } from 'react';
 
 import CityCard from './CityCard';
 import { useDataLayerValue } from '../../../Context/DataLayer';
@@ -10,20 +10,20 @@ import '../../../Styles/Home.css';
 export default function Home() {
   const [{settings, ipLocation, user}, dispatch] = useDataLayerValue();
 
-  const searchCities = (search) => dispatch({type: 'SET_SEARCH', search});
+  const searchCities = (search) => dispatch({ type: 'SET_SEARCH', search });
 
-  useEffect(() => { dispatch({type: 'SET_SEARCH', search: ''}) }, [dispatch]);
+  useEffect(() => { dispatch({ type: 'SET_SEARCH', search: '' }) }, [dispatch]);
 
   
   return (
     <div className="home__body">
-      {ipLocation !== null && <div className="home">
+      <div className="home">
 
         <span className="home__search">
           <input placeholder="Search in your favorites..." onChange={(e) => searchCities(e.target.value)}/>
         </span>
 
-        {settings.defaultWeather && <CityCard city={ipLocation.city + ',' + ipLocation.country} description="Based on your current location"/>}
+        {(ipLocation && settings.defaultWeather) && <CityCard city={ipLocation.city + ',' + ipLocation.country} description="Based on your current location"/>}
         
         {user && user.favorites?.map((city, i) => <CityCard key={i} city={city} description="From favorites" remove="Remove"/>)}
 
@@ -34,7 +34,7 @@ export default function Home() {
             </div>
           </Link>
         </div>
-      </div>}
+      </div>
     </div>
   );
 }

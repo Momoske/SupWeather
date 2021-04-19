@@ -3,14 +3,12 @@ import Switch from 'react-switch';
 
 import { useDataLayerValue } from '../../../../Context/DataLayer';
 
+
 export default function OWMicons() {
   const [{settings}, dispatch] = useDataLayerValue();
 
   const toggleOwmIcons = () => {
-    dispatch({
-      type: 'SET_SETTINGS',
-      settings: {...settings, owmIcons: !settings.owmIcons}
-    });
+    dispatch({ type: 'SET_SETTINGS', settings: {...settings, owmIcons: !settings.owmIcons} });
     localStorage.setItem('owmIcons', localStorage.getItem('owmIcons') !== 'off' ? 'off' : 'on');
   }
 

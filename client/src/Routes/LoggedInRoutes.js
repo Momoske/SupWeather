@@ -31,6 +31,7 @@ export default function LoggedInRoutes() {
             <CityDetails/>
           </Route>
 
+          {/* Redirect to the home page if the route doesn't exist */}
           <Route render={() => <Redirect to='/'/>}/>
         </Switch>
       </div>

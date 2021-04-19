@@ -1,9 +1,11 @@
 import { useParams } from 'react-router';
 import Carousel from 'react-multi-carousel';
+import BeatLoader from 'react-spinners/BeatLoader';
 import React, { useState, useEffect } from 'react';
 
 import DetailCard from './DetailCard';
 import { getWeatherDetails } from '../../../Functions/weather';
+import { useDataLayerValue } from '../../../Context/DataLayer';
 
 import '../../../Styles/CityDetails.css';
 import 'react-multi-carousel/lib/styles.css';
@@ -34,6 +36,7 @@ const responsive = {
 
 export default function CityDetails() {
   const {city} = useParams();
+  const [{theme},] = useDataLayerValue();
 
   const [option, setOption] = useState('day');
   const [weather, setWeather] = useState({day: null, hour: null});
@@ -51,7 +54,13 @@ export default function CityDetails() {
   
   return (
     <div className="citydetails">
-      {weather[option] && <>
+      {!weather[option]
+        ?
+      <div className="loader" style={{height: '100%'}}>
+        <BeatLoader color={theme === 'dark' ? '#84faa4' : '#243cf8'} loading/>
+      </div>
+        :
+      <>
         <div className="citydetails__body">
           <div id="title">
             <h1>{weather[option].city.name} ({weather[option].city.country})</h1>

@@ -14,8 +14,11 @@
   max-width: 250px;
 }
 .theme__toggle > *, .brand > *, .hamburger {
-  transition: color 0.25s ease-in-out, opacity 0.25s ease-in-out;
+  transition: color 0.33s ease-in-out, opacity 0.33s ease-in-out;
 }
+
+
+/* SUPWEATHER LOGO & NAME */
 
 .brand {
   display: flex;
@@ -34,6 +37,9 @@
   cursor: pointer;
   margin-left: 12px;
 }
+
+
+/* LIGHT - DARK THEME SWITCH */
 
 .theme__toggle {
   display: flex;

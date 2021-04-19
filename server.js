@@ -1,8 +1,6 @@
 require('dotenv').config({path: './config.env'});
 
-const fs = require('fs');
 const path = require('path');
-const cors = require('cors');
 const https = require('https');
 const helmet = require('helmet');
 const express = require('express');
@@ -14,31 +12,22 @@ const connectDB = require('./config/db');
 const errorHandler = require('./middleware/error');
 
 
-// https config
-const cert = process.env.NODE_ENV !== 'production' ? fs.readFileSync('cert.pem', 'utf8') : null;
-const key  = process.env.NODE_ENV !== 'production' ? fs.readFileSync('key.pem', 'utf8') : null;
-const credentials = {key: key, cert: cert};
-
-
 // app & db config
 const port = process.env.PORT;
 const app = express();
 connectDB();
 
 
-app.use(express.static(path.join(__dirname, 'client', 'build')));
-
-
 // middleware
 const corsOpts = {
-  origin: ['https://localhost:3000', 'https://localhost:9000', 'https://supweather.herokuapp.com'],
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  credentials: true
+  credentials: true,
+  origin: ['https://localhost:3000'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE']
 };
 
 const rateLimiter = new RateLimit({
   windowMs: 600000, // 10 minutes
-  max: 100 // 100 requests max
+  max: 100 // 100 requests at max
 });
 
 app.use(helmet());
@@ -54,29 +43,47 @@ app.use(helmet.contentSecurityPolicy({
 }));
 
 app.use(cookieParser());
-app.use(cors(corsOpts));
 app.use(express.json());
 app.use(mongoSanitize());
+process.env.NODE_ENV !== 'production' && app.use(require('cors')(corsOpts));
 
+
+// API routes
 app.use('/api/v1', rateLimiter);
 app.use('/api/v1/auth', require('./routes/auth'));
 app.use('/api/v1/user', require('./routes/user'));
 app.use('/api/v1/location', require('./routes/location'));
 
-app.get('*', (req, res) => res.sendFile(path.join(__dirname, 'client', 'build', 'index.html')));
 
-app.use(errorHandler); // needs to be last middleware used here
+// On Heroku, serve the React client as a static file
+app.use(express.static(path.join(__dirname, 'client', 'build')));
+process.env.NODE_ENV === 'production' && app.get('*', (req, res) => res.sendFile(path.join(__dirname, 'client', 'build', 'index.html')));
 
 
-// listener
-const httpsServer = https.createServer(credentials, app);
-const server = process.env.NODE_ENV === 'production'
-  ?
-app.listen(port, () => console.log('Listening on port ' + port))
-  :
-httpsServer.listen(port, () => console.log('Listening on port ' + port));
+app.use(errorHandler); // needs to be last middleware
 
-process.on('unhandledRejection', (error, _) => {
-  console.log('Logged Error: '+error);
-  server.close(() => process.exit(1));
-});
+
+// server startup
+if (process.env.NODE_ENV === 'production') {
+
+  app.listen(port);
+
+  process.on('unhandledRejection', (error, _) => {
+    console.log('Logged Error: ' + error);
+  });
+
+} else {
+
+  const cert = require('fs').readFileSync('cert.pem', 'utf8');
+  const key  = require('fs').readFileSync('key.pem', 'utf8');
+  const credentials = {key: key, cert: cert};
+
+  const httpsServer = https.createServer(credentials, app);
+  const server = httpsServer.listen(port, () => console.log('Listening on port ' + port));
+  
+  process.on('unhandledRejection', (error, _) => {
+    console.log('Logged Error: ' + error);
+    server.close(() => process.exit(1));
+  });
+
+}

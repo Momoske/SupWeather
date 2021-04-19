@@ -24,6 +24,7 @@ export default function LoggedOutRoutes() {
           <Register/>
         </Route>
 
+        {/* Redirect to the home page if the route doesn't exist */}
         <Route render={() => <Redirect to='/login'/>}/>
       </Switch>
     </>

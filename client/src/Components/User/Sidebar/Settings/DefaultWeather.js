@@ -3,14 +3,12 @@ import Switch from 'react-switch';
 
 import { useDataLayerValue } from '../../../../Context/DataLayer';
 
+
 export default function DefaultWeather() {
   const [{settings}, dispatch] = useDataLayerValue();
 
   const toggleDefaultWeather = () => {
-    dispatch({
-      type: 'SET_SETTINGS',
-      settings: {...settings, defaultWeather: !settings.defaultWeather}
-    });
+    dispatch({ type: 'SET_SETTINGS', settings: {...settings, defaultWeather: !settings.defaultWeather} });
     localStorage.setItem('defaultWeather', localStorage.getItem('defaultWeather') !== 'off' ? 'off' : 'on');
   }
 

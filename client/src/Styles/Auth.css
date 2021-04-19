@@ -42,7 +42,7 @@
 }
 #forgotLink:hover { text-decoration: underline; }
 
-#forgotLink, .auth__title { transition: color 0.25s ease-in-out; }
+#forgotLink, .auth__title { transition: color 0.33s ease-in-out; }
 
 
 /* DARK MODE */
