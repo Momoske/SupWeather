@@ -10,8 +10,8 @@
   align-items: center;
 }
 .header > div:not(.header__search) {
-  min-width: 250px;
-  max-width: 250px;
+  min-width: 210px;
+  max-width: 210px;
 }
 .theme__toggle > *, .brand > *, .hamburger {
   transition: color 0.33s ease-in-out, opacity 0.33s ease-in-out;
@@ -72,5 +72,17 @@
   }
   .header {
     min-height: 50px;
+  }
+}
+
+@media(max-width: 420px) {
+  .header > div:first-child {
+    min-width: 70px;
+  }
+  .brand > span {
+    display: none;
+  }
+  .logo {
+    margin: 0 6px;
   }
 }

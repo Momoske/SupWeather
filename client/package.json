@@ -1,6 +1,6 @@
 {
-  "name": "supweather",
-  "version": "0.1.0",
+  "name": "supweather-client",
+  "version": "1.0.0",
   "private": true,
   "proxy": "https://localhost:9000",
   "dependencies": {

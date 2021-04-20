@@ -1,7 +1,7 @@
 {
-  "name": "thegoodfork-backend",
+  "name": "supweather",
   "version": "1.0.0",
-  "description": "TheGoodFork Backend",
+  "description": "SupWeather",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
@@ -22,7 +22,6 @@
     "helmet": "^4.4.1",
     "jsonwebtoken": "^8.5.1",
     "mongo-sanitize": "^1.1.0",
-    "mongodb": "^3.6.3",
     "mongoose": "^5.11.15",
     "nodemailer": "^6.4.18"
   }
