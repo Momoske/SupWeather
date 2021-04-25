@@ -23,14 +23,16 @@ const handleLogout = (dispatch) => {
   });
 }
 
-const deleteAccount = (dispatch) => {
-  if (window.confirm('Are you sure to delete your account?')) {
-    deleteUser().then(res => {
+const deleteAccount = (dispatch, user) => {
+  const input = window.prompt('Please type-in your email address to delete your account.');
+  if (input === user.email) {
+    return deleteUser().then(res => {
       if (!res.success) return window.alert(res);
       dispatch({ type: 'SET_USER', user: {} });
       localStorage.removeItem('isSignedIn');
     });
   }
+  if (input) window.alert('The email address you typed is incorrect, please try again.');
 }
 
 
@@ -55,12 +57,9 @@ export default function Sidebar() {
 
           <br/>
 
-          <br/><button className="button" style={{width: '100%', backgroundColor: '#f22c', color: '#eee'}} onClick={() => handleLogout(dispatch)}>
-            LOG OUT
-          </button><br/><br/>
-          <button className="remove" style={{margin: '0 auto', display: 'block', padding: '8px'}} onClick={() => deleteAccount(dispatch)}>
-            Delete account
-          </button>
+          <br/><button className="button button-logout" onClick={() => handleLogout(dispatch)}>LOG OUT</button>
+          <br/><br/>
+          <button className="remove button-delete" onClick={() => deleteAccount(dispatch, user)}>Delete account</button>
         </div>
 
       </div>

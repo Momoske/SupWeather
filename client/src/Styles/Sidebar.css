@@ -28,9 +28,8 @@
   align-items: center;
   justify-content: space-between;
 }
-.sidebar__header > * {
-  padding: 16px;
-}
+.sidebar__header > * { padding: 16px; }
+.sidebar__header > span { user-select: none; }
 
 .sidebar__header > h2 {
   margin: 0;
@@ -43,6 +42,18 @@
   padding: 16px;
 }
 
+.button-logout {
+  width: 100%;
+  color: #eee;
+  user-select: none;
+  background-color: #f22c !important;
+}
+
+.button-delete {
+  padding: 8px;
+  display: block;
+  margin: 0 auto;
+}
 
 /* CLICKABLE EMPTY BACKGROUND AREA TO DISMISS DRAWER */
 
