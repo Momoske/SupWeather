@@ -13,23 +13,6 @@ import '../Styles/App.css';
 export default function App() {
   const [{user, theme}, dispatch] = useDataLayerValue();
 
-  useEffect(() => { // REMOVE TRANSITIONS ON WINDOW RESIZE
-    let timer = 0;
-    const body = document.body.classList;
-    window.addEventListener('resize', () => {
-      if (timer) {
-        clearTimeout(timer);
-        timer = null;
-      }
-      else body.add('stop-transitions');
-
-      timer = setTimeout(() => {
-        body.remove('stop-transitions');
-        timer = null;
-      }, 100);
-    });
-  }, []);
-
   useEffect(() => {
     // Retrieve the user's nearest main city to display a default weather location on first login
     getIpLocation().then(res => dispatch({ type: 'SET_IP_LOCATION', ipLocation: res.location }));

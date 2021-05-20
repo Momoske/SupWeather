@@ -8,9 +8,7 @@ import '../../Styles/Header.css';
 
 
 const openSidebar = () => {
-  document.querySelector('.sidebar__drawer').style.transform = 'translateX(0)';
-  document.querySelector('.sidebar__backdrop').style.visibility = 'inherit';
-  document.querySelector('.sidebar__backdrop').style.opacity = 0.5;
+  document.querySelectorAll('.sidebar > div').forEach(element => element.classList.toggle('active'));
 }
 
 const toggleTheme = (dark, setDark, dispatch) => {

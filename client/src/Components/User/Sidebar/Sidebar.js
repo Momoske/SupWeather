@@ -10,9 +10,7 @@ import '../../../Styles/Sidebar.css';
 
 
 const closeSidebar = () => {
-  document.querySelector('.sidebar__drawer').style.transform = 'translateX(-280px)';
-  document.querySelector('.sidebar__backdrop').style.visibility = 'hidden';
-  document.querySelector('.sidebar__backdrop').style.opacity = 0;
+  document.querySelectorAll('.sidebar > div').forEach(element => element.classList.toggle('active'));
 }
 
 const handleLogout = (dispatch) => {
@@ -63,7 +61,7 @@ export default function Sidebar() {
         </div>
 
       </div>
-      <div className="sidebar__backdrop" onClick={closeSidebar}></div>
+      <div className="sidebar__backdrop" onClick={closeSidebar}/>
     </div>
   );
 }

@@ -8,7 +8,6 @@ export const login = async (user) => {
     return window.alert('Please fill-in both email and password.');
 
   try {
-    user.login = user.login.replace(' ', '');
     const {data} = await axios.post(apiUrl + 'auth/login', user, cookieConfig);
 
     return data.success ? data : data?.error;
@@ -29,7 +28,6 @@ export const logout = async () => {
 
 export const register = async (user) => {
   try {
-    user.email = user.email.replace(' ', '');
     const {data} = await axios.post(apiUrl + 'auth/register', user, cookieConfig);
 
     return data.success ? data : data?.error;
@@ -40,7 +38,6 @@ export const register = async (user) => {
 
 export const forgotPw = async (forgot) => {
   try {
-    forgot = forgot.replace(' ', '');
     const {data} = await axios.post(apiUrl + 'auth/forgot', {forgot}, config);
 
     return data.success ? data : data?.error;
